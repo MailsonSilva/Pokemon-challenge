@@ -1,0 +1,12 @@
+{
+  "name": "Pokemon-challenge",
+  "displayName": "Pokemon-challenge",
+  "expo": {
+    "name": "Pokemon-challenge",
+    "slug": "Pokemon-challenge",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
