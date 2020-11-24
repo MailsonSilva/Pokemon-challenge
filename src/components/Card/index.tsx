@@ -1,26 +1,20 @@
 import React from 'react';
-import { Text } from 'react-native';
-
-import { Container, ContainerCard, TextCount, TextName } from './styles';
+import { Container, ContainerCard, ImagePoke, TextCount, TextName } from './styles';
 
 interface Pokemon {
-  count: number;
-  next: string;
-  previous: null,
-  results: [
-        {
-          name: string,
-          url: string
-        }
-  ]
+  pokemonIndex: number;
+  name: string;
+  img: string;
 };
 
-const Card: React.FC<Pokemon> = ({pokemon}) => {
+const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
+
   return (
     <Container >
       <ContainerCard >
-        <TextCount ># 1</TextCount>
-        <TextName >sss</TextName>
+        <TextCount># {pokemonIndex}</TextCount>
+        <ImagePoke  source={{ uri: img }} />
+        <TextName>{name}</TextName>
       </ContainerCard>
 
     </Container>
