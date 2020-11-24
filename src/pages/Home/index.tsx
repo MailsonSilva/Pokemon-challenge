@@ -67,21 +67,7 @@ const Home: React.FC = () => {
           autoCorrect={false}
           autoCapitalize="none"
         />
-
-
-        {/* <Card pokemon={pokemons}/> */}
-
-        {/* <ScrollView>
-          {pokemons.map((pokemon, index)=>{
-            return(
-            // <Text key={index}>{pokemon.name}</Text>
-              <Card key={index} pokemon={pokemon}/>
-            )
-          })}
-        </ScrollView> */}
-
       </ContainerBody>
-
       <PokemonList
           numColumns={2}
           data={pokemons}
@@ -90,7 +76,6 @@ const Home: React.FC = () => {
           renderItem={renderItem}
           keyExtractor={(item) => item.name}
         />
-
     </Container>
   );
 }

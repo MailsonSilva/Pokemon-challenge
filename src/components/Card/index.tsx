@@ -1,5 +1,12 @@
 import React from 'react';
-import { Container, ContainerCard, ImagePoke, TextCount, TextName } from './styles';
+import {
+   Container,
+   ContainerCard,
+   TextContainerCount,
+   ImagePoke,
+   TextContainerName,
+   TextCount,
+   TextName } from './styles';
 
 interface Pokemon {
   pokemonIndex: number;
@@ -12,9 +19,15 @@ const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
   return (
     <Container >
       <ContainerCard >
-        <TextCount># {pokemonIndex}</TextCount>
+        <TextContainerCount>
+          <TextCount># {pokemonIndex}</TextCount>
+        </TextContainerCount>
+
         <ImagePoke  source={{ uri: img }} />
-        <TextName>{name}</TextName>
+
+        <TextContainerName>
+          <TextName>{name}</TextName>
+        </TextContainerName>
       </ContainerCard>
 
     </Container>
