@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { NamedExoticComponent, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import api from '../../services/api';
 import {
    Container,
@@ -20,27 +21,60 @@ interface Pokemon {
   img: string;
 };
 
-interface TypePokemon {
+interface TyPokemon {
   types: {
-    name: string,
-  }
-}[]
+    type: {
+      name: string,
+    }
+  };
+};
+
+interface TypePokemon {
+  damage_relations: {
+    double_damage_from: [
+      {
+        name: string,
+      }
+    ],
+    double_damage_to: [],
+    half_damage_from: [],
+    half_damage_to: [
+      {
+        name: string,
+      },
+      {
+        name: string,
+      }
+    ],
+    no_damage_from: [
+      {
+        name: string,
+      }
+    ],
+    no_damage_to: [
+      {
+        name: string,
+      }
+    ]
+  },
+}
 
 const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
-  const [types, setTypes] = useState<TypePokemon[]>([]);
+  const [types, setTypes] = useState<TyPokemon[]>([]);
 
   const loadTypes = async() => {
-    const response = await api.get(pokemonIndex + '/');
+    const response = await api.get(`pokemon/${pokemonIndex}`);
 
-    setTypes(response.data.types);
+    setTypes(response.data.types[0].type.name);
 
-    console.log(types.map(t=>t.name));
   }
 
   useEffect(() => {
     loadTypes();
-    // console.log(types);
+    console.log(types);
   },[]);
+
+  // const typeName = types.map(type => type.damage_relations.half_damage_to[0].name);
 
   return (
     <Container {...rest} >
@@ -59,7 +93,7 @@ const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
 
         <TextContainerType>
           <TextType>Type: </TextType>
-          <TextTypePokemon>{types.map(type => type.name)}</TextTypePokemon>
+          <TextTypePokemon>{types}</TextTypePokemon>
         </TextContainerType>
     </Container>
   );

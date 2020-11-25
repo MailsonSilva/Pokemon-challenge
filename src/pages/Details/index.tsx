@@ -4,8 +4,7 @@ import Header from '../../components/Header';
 import Card from '../../components/Card';
 import api from '../../services/api';
 
-import { Container, PokemonDetail, ContainerCard } from './styles';
-import { Text } from 'react-native';
+import { Container, ContainerCard } from './styles';
 
 interface Pokemon {
   pokemonIndex: number;
@@ -22,51 +21,28 @@ const Details: React.FC = () => {
   const loadDetail = async() => {
     const response = await api.get(pokeIndex + '/');
 
-    setpokemonDetail(response.data);
+    setpokemonDetail(response.data.results);
 
-    console.log(response.data.results);
+    console.log(pokemonDetail);
   }
 
   useEffect(() => {
-    loadDetail();
-    // console.log(types);
+    loadDetail();       // console.log(types);
   },[]);
 
-  const renderItem = ({item}) => {
-    // Define a numeração do pokemon
-    const url = item.url;
-    const pokemonIndex = url.split('/')[url.split('/').length - 2];
-    // Pega a imagem do pokemon de acordo com sua numeração
-    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeIndex}.png`;
-
-    return(
-        <ContainerCard>
-            {/* <Card
-              pokemonIndex={pokeIndex}
-              img={imageUrl}
-              name={item.name}
-            /> */}
-        </ContainerCard>
-    ) ;
-  }
+  // const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeIndex}.png`;
 
   return (
     <Container>
       <Header>POKÉMON CHALLENGE</Header>
 
-      <PokemonDetail
-          // columnWrapperStyle={{justifyContent: 'space-between'}}
-          numColumns={1}
-          data={pokemonDetail}
-          extraData={pokeIndex}
-          refreshing={true}
-          renderItem={({item})=>{
-            <Text>
-              {item.name}
-            </Text>
-          }}
-          keyExtractor={(item: Pokemon) => item.name}
-        />
+      <ContainerCard>
+          {/* <Card
+            pokemonIndex={pokeIndex}
+            img={imageUrl}
+            name={'nome'}
+          /> */}
+      </ContainerCard>
     </Container>
   );
 }

@@ -22,15 +22,20 @@ const Home: React.FC = () => {
     navigation.navigate('Details', {pokemonIndex});
   }
 
-  useEffect(() => {
-    api.get()
+  const loadPokemons = async() => {
+    await api.get(`pokemon/`)
     .then((response) => {
       setPokemons(response.data.results);
     })
     .catch((error) => {
       Alert.alert('Location error', `${(error.code, error.message)}`);
     });
+  };
+
+  useEffect(() => {
+    loadPokemons();
   },[]);
+
 
   const renderItem = ({item}) => {
     // Define a numeração do pokemon
@@ -38,6 +43,7 @@ const Home: React.FC = () => {
     const pokemonIndex = url.split('/')[url.split('/').length - 2];
     // Pega a imagem do pokemon de acordo com sua numeração
     const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`;
+
 
     return(
         <ButtonCard onPress={() => DetailPage(pokemonIndex)}>

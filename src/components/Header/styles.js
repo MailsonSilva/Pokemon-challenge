@@ -6,10 +6,11 @@ export const Container = styled.View`
   background: ${Colors.background};
 
   display: flex;
+  align-items: center;
   flex-direction: row;
 `;
 
-export const TextInput = styled.TextInput`
+export const Text = styled.Text`
   flex: 1;
   text-align: center;
   color: #fff;
