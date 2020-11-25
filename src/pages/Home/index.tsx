@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Container, ContainerBody, PokemonList } from './styles';
+import { Alert } from 'react-native';
+import { Container, ContainerBody, PokemonList, ButtonCard } from './styles';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Card from '../../components/Card';
-import { ScrollView, Alert, FlatList, Text, TouchableOpacity } from 'react-native';
 import api from '../../services/api';
-
+import { useNavigation } from '@react-navigation/native';
 
 export interface Pokemon {
-  // count: number;
-  // next: string;
-  // previous: null,
-  // results: [
-  //       {
-  //         name: string,
-  //         url: string
-  //       }
-  // ]
-
-    name: string;
-    url: string;
-
+  name: string;
+  url: string;
 };
 
-let pokemonIndex = 1, counter = 1;
+let pokemonIndex = 1, numColumns=3;
 
 const Home: React.FC = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const navigation = useNavigation();
+
+  const DetailPage = (pokemonIndex:Number) => {
+    navigation.navigate('Details', {pokemonIndex});
+  }
 
   useEffect(() => {
     api.get()
@@ -38,23 +32,23 @@ const Home: React.FC = () => {
     });
   },[]);
 
-  const renderItem = (data) => {
+  const renderItem = ({item}) => {
     // Define a numeração do pokemon
-    const url = data.item.url;
+    const url = item.url;
     const pokemonIndex = url.split('/')[url.split('/').length - 2];
     // Pega a imagem do pokemon de acordo com sua numeração
-    const imageUrl = `https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${pokemonIndex}.png?raw=true`;
+    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`;
 
     return(
-        <TouchableOpacity onPress={() => {}}>
+        <ButtonCard onPress={() => DetailPage(pokemonIndex)}>
             <Card
               pokemonIndex={pokemonIndex}
               img={imageUrl}
-              name={data.item.name}
+              name={item.name}
             />
-        </TouchableOpacity>
+        </ButtonCard>
     ) ;
-}
+  }
 
   return (
     <Container>
@@ -68,13 +62,15 @@ const Home: React.FC = () => {
           autoCapitalize="none"
         />
       </ContainerBody>
+
       <PokemonList
-          numColumns={2}
+          numColumns={numColumns}
+          // columnWrapperStyle={{justifyContent: 'space-between'}}
           data={pokemons}
           extraData={pokemonIndex}
           refreshing={true}
           renderItem={renderItem}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item: Pokemon) => item.name}
         />
     </Container>
   );

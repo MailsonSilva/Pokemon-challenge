@@ -7,9 +7,16 @@ export const Container = styled.View`
 `;
 
 export const ContainerBody = styled.View`
-  margin: 0 10px 10px 10px;
+  margin: 0 10px;
+`;
+
+export const ButtonCard = styled.TouchableOpacity`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
 `;
 
 export const PokemonList = styled.FlatList`
-  padding: 5px 5px;
+    margin: 5px;
 `;
