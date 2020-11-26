@@ -18,5 +18,5 @@ export const ButtonCard = styled.TouchableOpacity`
 `;
 
 export const PokemonList = styled.FlatList`
-    margin: 5px;
+  margin: 5px;
 `;

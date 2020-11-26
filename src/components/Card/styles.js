@@ -4,7 +4,7 @@ import Colors from '../../styles/Colors';
 export const Container = styled.View`
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 5px;
   width: 100%;
   border-radius: 10px;
   background: ${Colors.grayEasy};
@@ -16,7 +16,8 @@ export const TextContainerCount = styled.View`
 `;
 
 export const TextCount = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
+  font-family: RobotoSlab_500Medium;
   color: ${Colors.grayHard};
 `;
 
@@ -36,26 +37,30 @@ export const TextContainerName = styled.View`
 
 export const TextName = styled.Text`
   font-size: 14px;
+  font-family: RobotoSlab_400Regular;
   color: ${Colors.fill};
 `;
 
 export const TextNamePokemon = styled.Text`
   font-size: 14px;
+  font-family: RobotoSlab_500Medium;
   color: ${Colors.orangeLight};
 `;
 
 export const TextContainerType = styled.View`
   align-items: center;
   flex-direction: row;
-  margin-top: 2px;
+  margin-top: 1px;
 `;
 
 export const TextType = styled.Text`
-  font-size: 14px;
+  font-size: 13px;
+  font-family: RobotoSlab_400Regular;
   color: ${Colors.fill};
 `;
 
 export const TextTypePokemon = styled.Text`
-  font-size: 12px;
+  font-size: 13px;
+  font-family: RobotoSlab_500Medium;
   color: ${Colors.orangeLight};
 `;

@@ -71,10 +71,10 @@ const Home: React.FC = () => {
 
       <PokemonList
           numColumns={numColumns}
-          // columnWrapperStyle={{justifyContent: 'space-between'}}
           data={pokemons}
           extraData={pokemonIndex}
-          refreshing={true}
+          // refreshing={true}
+          showsVerticalScrollIndicator={false}
           renderItem={renderItem}
           keyExtractor={(item: Pokemon) => item.name}
         />

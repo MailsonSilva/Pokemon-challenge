@@ -32,7 +32,7 @@ const Colors = {
   tertiary: '#232129',
   grayHard: '#666360',
   grayEasy: '#3E3B47',
-  fill: '#666360',
+  fill: '#F4EDE8',
   orangeLight: '#FF9000',
   light: '#ecf0f1',
   dark: '#34495e',

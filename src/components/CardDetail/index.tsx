@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
+import ProgressBar from '../../components/ProgressBar';
 import {
    Container,
    TextContainerCount,
@@ -8,10 +9,14 @@ import {
    ImagePoke,
    TextContainerName,
    TextNamePokemon,
-   TextName,
-   TextContainerType,
-   TextType,
-   TextTypePokemon
+   Measures,
+   MeasuresKG,
+   MeasuresKGText,
+   MeasuresKGWeigth,
+   MeasuresM,
+   MeasuresMText,
+   MeasuresMHeight,
+   StatsTest
   } from './styles';
 
 interface Pokemon {
@@ -25,7 +30,8 @@ interface Pokemon {
   };
 };
 
-const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
+
+const CardDetail: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
   const [types, setTypes] = useState<Pokemon[]>([]);
 
   const loadTypes = async() => {
@@ -40,8 +46,6 @@ const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
 
   },[]);
 
-  // const typeName = types.map(type => type.damage_relations.half_damage_to[0].name);
-
   return (
     <Container {...rest} >
         <TextContainerCount>
@@ -49,20 +53,34 @@ const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
         </TextContainerCount>
 
         <ImageContainer>
-          <ImagePoke  source={{ uri: img }} />
+          <ImagePoke source={{ uri: img }}/>
         </ImageContainer>
 
         <TextContainerName>
-          <TextName>Name: </TextName>
           <TextNamePokemon>{name}</TextNamePokemon>
         </TextContainerName>
 
-        <TextContainerType>
-          <TextType>Type: </TextType>
-          <TextTypePokemon>{types}</TextTypePokemon>
-        </TextContainerType>
+        <Measures>
+          <MeasuresKG>
+            <MeasuresKGText>69 KG</MeasuresKGText>
+            <MeasuresKGWeigth>Weigth</MeasuresKGWeigth>
+          </MeasuresKG>
+
+          <MeasuresM>
+            <MeasuresMText>0.7 M</MeasuresMText>
+            <MeasuresMHeight>Height</MeasuresMHeight>
+          </MeasuresM>
+        </Measures>
+
+        <StatsTest>Stats</StatsTest>
+
+        <ProgressBar/>
+        <ProgressBar/>
+        <ProgressBar/>
+        <ProgressBar/>
+
     </Container>
   );
 }
 
-export default Card;
+export default CardDetail;
