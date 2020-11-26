@@ -7,19 +7,6 @@ export const Container = styled.View`
   background: ${Colors.primary};
 `;
 
-export const ContainerCard = styled.View`
-  flex: 1;
-  align-items: center;
-  margin: 10px;
-`;
-
-export const BackButton = styled.TouchableOpacity`
-  margin: 10px 0 0 15px;
-  flex-direction: row;
-  align-items: center;
-  margin-right: auto;
-`;
-
 export const Icon = styled(Feather)`
   margin-right: 5px;
   color: ${Colors.orangeLight};
@@ -29,4 +16,34 @@ export const TextBack = styled.Text`
   font-size: 16px;
   font-family: RobotoSlab_400Regular;
   color: ${Colors.orange};
+`;
+
+export const ContainerCard = styled.View`
+  flex: 1;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+export const BackButton = styled.TouchableOpacity`
+  margin: 10px 0 0 15px;
+  flex-direction: row;
+  align-items: center;
+  margin-right: auto;
+`;
+
+export const ContainerCardFamily = styled.View`
+  width: 100%;
+  margin: 25px 0 5px;
+`;
+
+export const FamilyText = styled.Text`
+  color: ${Colors.fill};
+  font-size: 24px;
+  font-family: RobotoSlab_400Regular;
+`;
+
+export const ContainerCard2 = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
 `;

@@ -3,10 +3,18 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import api from '../../services/api';
 import CardDetail from '../../components/CardDetail';
-
-
-import { Container, ContainerCard,Icon, BackButton,TextBack} from './styles';
 import { ScrollView } from 'react-native';
+import Card from '../../components/Card';
+import {
+  Container,
+  ContainerCard,
+  Icon,
+  BackButton,
+  TextBack,
+  ContainerCard2,
+  ContainerCardFamily,
+  FamilyText
+} from './styles';
 
 interface Pokemon {
   pokemonIndex: number;
@@ -50,13 +58,31 @@ const Details: React.FC = () => {
         <TextBack>Back</TextBack>
       </BackButton>
 
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <ScrollView keyboardShouldPersistTaps="handled" style={{margin: 10}}>
         <ContainerCard>
-            <CardDetail
-              pokemonIndex={pokeIndex}
+          <CardDetail
+            pokemonIndex={pokeIndex}
+            img={imageUrl}
+            name={pokemonDetail}
+          />
+
+          <ContainerCardFamily>
+            <FamilyText>Family Tree</FamilyText>
+          </ContainerCardFamily>
+
+          <ContainerCard2>
+            <Card
+              pokemonIndex={2}
               img={imageUrl}
-              name={pokemonDetail}
+              name="teste"
             />
+
+            <Card
+              pokemonIndex={3}
+              img={imageUrl}
+              name="teste"
+            />
+          </ContainerCard2>
         </ContainerCard>
       </ScrollView>
     </Container>

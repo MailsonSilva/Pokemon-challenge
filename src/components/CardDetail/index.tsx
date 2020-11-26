@@ -74,10 +74,10 @@ const CardDetail: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
 
         <StatsTest>Stats</StatsTest>
 
-        <ProgressBar/>
-        <ProgressBar/>
-        <ProgressBar/>
-        <ProgressBar/>
+        <ProgressBar progress={0.9} info="HP" />
+        <ProgressBar progress={0.5} info="ATK" />
+        <ProgressBar progress={0.6} info="DEF" />
+        <ProgressBar progress={0.8} info="SPD" />
 
     </Container>
   );

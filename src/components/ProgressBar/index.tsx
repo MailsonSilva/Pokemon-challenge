@@ -1,11 +1,27 @@
 import React from 'react';
 import * as Progress from 'react-native-progress';
-import { Container } from './styles';
+import Colors from '../../styles/Colors';
+import { Container, Infocontainer,InfoText } from './styles';
 
-const ProgressBarr: React.FC = () => {
+interface ProgressBar {
+  progress: number;
+  info: string;
+}
+
+const ProgressBarr: React.FC<ProgressBar> = ({progress, info,...rest}) => {
   return (
-    <Container>
-      <Progress.Bar progress={0.3} width={200} height={12} borderRadius={8}/>
+    <Container {...rest}>
+      <Infocontainer>
+        <InfoText>{info}</InfoText>
+      </Infocontainer>
+
+      <Progress.Bar
+        progress={progress}
+        color={Colors.orangeLight}
+        width={180}
+        height={12}
+        borderRadius={8}
+      />
     </Container>
   );
 }
