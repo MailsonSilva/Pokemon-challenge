@@ -70,14 +70,14 @@ const Home: React.FC = () => {
       </ContainerBody>
 
       <PokemonList
-          numColumns={numColumns}
-          data={pokemons}
-          extraData={pokemonIndex}
-          // refreshing={true}
-          showsVerticalScrollIndicator={false}
-          renderItem={renderItem}
-          keyExtractor={(item: Pokemon) => item.name}
-        />
+        numColumns={numColumns}
+        data={pokemons}
+        extraData={pokemonIndex}
+        // refreshing={true}
+        showsVerticalScrollIndicator={false}
+        renderItem={renderItem}
+        keyExtractor={(item: Pokemon) => item.name}
+      />
     </Container>
   );
 }

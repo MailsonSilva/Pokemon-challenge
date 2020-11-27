@@ -13,7 +13,8 @@ import {
   TextBack,
   ContainerCard2,
   ContainerCardFamily,
-  FamilyText
+  FamilyText,
+  PokemonList
 } from './styles';
 
 interface Pokemon {
@@ -22,12 +23,17 @@ interface Pokemon {
   img: string;
 };
 
+let numColumns=2;
+
 const Details: React.FC = () => {
   const [pokemonDetail, setpokemonDetail] = useState<Pokemon>();
+  const [pokeFamily, setPokeFamily] = useState<Pokemon[]>([]);
   const route = useRoute();
   const navigation = useNavigation();
 
   const pokeIndex = route.params.pokemonIndex;
+
+  const imageUrl0 = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeIndex}.png`;
 
   const loadDetail = async() => {
     const response = await api.get(`pokemon/${pokeIndex}/`);
@@ -44,7 +50,22 @@ const Details: React.FC = () => {
     navigation.goBack();
   }
 
-  const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeIndex}.png`;
+  const renderItem = ({item}) => {
+    // Define a numeração do pokemon
+    const url = item.url;
+    const pokemonIndex = url.split('/')[url.split('/').length - 2];
+    // Pega a imagem do pokemon de acordo com sua numeração
+    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`;
+
+
+    return(
+      <Card
+        pokemonIndex={pokemonIndex}
+        img={imageUrl}
+        name={item.name}
+      />
+    ) ;
+  }
 
   return (
     <Container>
@@ -62,7 +83,7 @@ const Details: React.FC = () => {
         <ContainerCard>
           <CardDetail
             pokemonIndex={pokeIndex}
-            img={imageUrl}
+            img={imageUrl0}
             name={pokemonDetail}
           />
 
@@ -70,18 +91,17 @@ const Details: React.FC = () => {
             <FamilyText>Family Tree</FamilyText>
           </ContainerCardFamily>
 
-          <ContainerCard2>
-            <Card
-              pokemonIndex={2}
-              img={imageUrl}
-              name="teste"
-            />
+          <PokemonList
+            numColumns={numColumns}
+            data={pokeFamily}
+            extraData={pokeIndex}
+            showsVerticalScrollIndicator={false}
+            // renderItem={renderItem}
+            keyExtractor={(item: Pokemon) => item.name}
+          />
 
-            <Card
-              pokemonIndex={3}
-              img={imageUrl}
-              name="teste"
-            />
+          <ContainerCard2>
+
           </ContainerCard2>
         </ContainerCard>
       </ScrollView>

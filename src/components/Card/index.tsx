@@ -18,11 +18,6 @@ interface Pokemon {
   pokemonIndex: number;
   name: string;
   img: string;
-  types: {
-    type: [
-      name: string,
-    ]
-  };
 };
 
 const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {

@@ -18,68 +18,87 @@ import {
    MeasuresMHeight,
    StatsTest
   } from './styles';
+import { ActivityIndicator } from 'react-native';
 
 interface Pokemon {
   pokemonIndex: number;
   name: string;
   img: string;
-  types: {
-    type: [
-      name: string,
-    ]
-  };
+  height: Number;
+  weight: Number;
 };
 
 
 const CardDetail: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
-  const [types, setTypes] = useState<Pokemon[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [height, setheight] = useState(0);
+  const [weight, setweight] = useState(0);
+  const [hp, setHp] = useState(0);
+  const [atk, setAtk] = useState(0);
+  const [def, setDef] = useState(0);
+  const [spd, setSpd] = useState(0);
+
+  useEffect(() => {
+    loadTypes();
+  },[]);
 
   const loadTypes = async() => {
     const response = await api.get(`pokemon/${pokemonIndex}`);
 
-    const tipos = response.data.types.map(item =>' '+ item.type.name).toString();
-    setTypes(tipos);
-  }
+    const {height} = response.data;
+    const {weight} = response.data;
 
-  useEffect(() => {
-    loadTypes();
+    setheight(height);
+    setweight(weight);
 
-  },[]);
+    const stats = response.data.stats.map(stats => stats.base_stat);
+    const statsSeparados = stats.toString().split(',', 6);
+
+    setHp(statsSeparados[5]);
+    setAtk(statsSeparados[4]);
+    setDef(statsSeparados[3]);
+    setSpd(statsSeparados[0]);
+    setLoading(false);
+  };
 
   return (
-    <Container {...rest} >
-        <TextContainerCount>
-          <TextCount># {pokemonIndex}</TextCount>
-        </TextContainerCount>
+    loading ? (
+      <ActivityIndicator size="large" />
+    ) : (
+      <Container {...rest} >
+          <TextContainerCount>
+            <TextCount># {pokemonIndex}</TextCount>
+          </TextContainerCount>
 
-        <ImageContainer>
-          <ImagePoke source={{ uri: img }}/>
-        </ImageContainer>
+          <ImageContainer>
+            <ImagePoke source={{ uri: img }}/>
+          </ImageContainer>
 
-        <TextContainerName>
-          <TextNamePokemon>{name}</TextNamePokemon>
-        </TextContainerName>
+          <TextContainerName>
+            <TextNamePokemon>{name}</TextNamePokemon>
+          </TextContainerName>
 
-        <Measures>
-          <MeasuresKG>
-            <MeasuresKGText>69 KG</MeasuresKGText>
-            <MeasuresKGWeigth>Weigth</MeasuresKGWeigth>
-          </MeasuresKG>
+          <Measures>
+            <MeasuresKG>
+              <MeasuresKGText>{height} KG</MeasuresKGText>
+              <MeasuresKGWeigth>Weigth</MeasuresKGWeigth>
+            </MeasuresKG>
 
-          <MeasuresM>
-            <MeasuresMText>0.7 M</MeasuresMText>
-            <MeasuresMHeight>Height</MeasuresMHeight>
-          </MeasuresM>
-        </Measures>
+            <MeasuresM>
+              <MeasuresMText>{weight} M</MeasuresMText>
+              <MeasuresMHeight>Height</MeasuresMHeight>
+            </MeasuresM>
+          </Measures>
 
-        <StatsTest>Stats</StatsTest>
+          <StatsTest>Stats</StatsTest>
 
-        <ProgressBar progress={0.9} info="HP" />
-        <ProgressBar progress={0.5} info="ATK" />
-        <ProgressBar progress={0.6} info="DEF" />
-        <ProgressBar progress={0.8} info="SPD" />
+          <ProgressBar progress={hp} info="HP" />
+          <ProgressBar progress={atk} info="ATK" />
+          <ProgressBar progress={def} info="DEF" />
+          <ProgressBar progress={spd} info="SPD" />
 
-    </Container>
+      </Container>
+    )
   );
 }
 

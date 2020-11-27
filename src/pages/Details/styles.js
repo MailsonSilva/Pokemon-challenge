@@ -47,3 +47,8 @@ export const ContainerCard2 = styled.View`
   justify-content: space-between;
   margin-top: 20px;
 `;
+
+export const PokemonList = styled.FlatList`
+  margin: 5px;
+`;
+
