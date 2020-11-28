@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import api from '../../services/api';
 import CardDetail from '../../components/CardDetail';
-import { ScrollView } from 'react-native';
+import { ActivityIndicator, ScrollView, View } from 'react-native';
 import Card from '../../components/Card';
 import {
   Container,
@@ -11,14 +11,16 @@ import {
   Icon,
   BackButton,
   TextBack,
-  ContainerCard2,
   ContainerCardFamily,
   FamilyText,
-  PokemonList
+  ContainerFamily
 } from './styles';
 
 interface Pokemon {
-  pokemonIndex: number;
+  params: {
+    pokemonIndex: number;
+  }
+
   name: string;
   img: string;
 };
@@ -27,85 +29,87 @@ let numColumns=2;
 
 const Details: React.FC = () => {
   const [pokemonDetail, setpokemonDetail] = useState<Pokemon>();
-  const [pokeFamily, setPokeFamily] = useState<Pokemon[]>([]);
-  const route = useRoute();
+  const [pokeFamily, setPokeFamily] = useState<Pokemon[]>([
+    {params:{pokemonIndex:1}, name: 'a', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png`},
+    {params:{pokemonIndex:2}, name: 'b', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png`},
+    {params:{pokemonIndex:3}, name: 'c', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png`},
+    {params:{pokemonIndex:4}, name: 'd', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png`},
+    {params:{pokemonIndex:5}, name: 'e', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png`},
+    {params:{pokemonIndex:6}, name: 'f', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png`},
+  ]);
+  const [loading, setLoading] = useState(true);
+  const route = useRoute<Pokemon | any>();
   const navigation = useNavigation();
 
   const pokeIndex = route.params.pokemonIndex;
 
   const imageUrl0 = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeIndex}.png`;
 
-  const loadDetail = async() => {
-    const response = await api.get(`pokemon/${pokeIndex}/`);
-    // setpokemonDetail(response.data.forms);
-    const pokemonName = response.data.forms.map(item => item.name).toString();
-    setpokemonDetail(pokemonName);
-  }
+  // const loadDetail = async() => {
+  //   const response = await api.get(`pokemon/${pokeIndex}/`);
+  //   // setpokemonDetail(response.data.forms);
+  //   const pokemonName = response.data.forms.map(item => item.name).toString();
+  //   setpokemonDetail(pokemonName);
+  //   console.log(pokemonName);
+
+  // }
 
   useEffect(() => {
-    loadDetail();
-  },[]);
+  //   // loadDetail();
+    setLoading(false);
+  },[pokeIndex]);
 
   const backHome = () => {
     navigation.goBack();
   }
 
-  const renderItem = ({item}) => {
-    // Define a numeração do pokemon
-    const url = item.url;
-    const pokemonIndex = url.split('/')[url.split('/').length - 2];
-    // Pega a imagem do pokemon de acordo com sua numeração
-    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`;
-
-
-    return(
-      <Card
-        pokemonIndex={pokemonIndex}
-        img={imageUrl}
-        name={item.name}
-      />
-    ) ;
-  }
-
   return (
-    <Container>
-      <Header>POKÉMON CHALLENGE</Header>
+    loading ? (
+      <ActivityIndicator size="large" />
+    ) : (
+      <Container>
+        <Header>POKÉMON CHALLENGE</Header>
 
-      <BackButton onPress={backHome} >
-        <Icon
-          name='arrow-left'
-          size={20}
-        />
-        <TextBack>Back</TextBack>
-      </BackButton>
-
-      <ScrollView keyboardShouldPersistTaps="handled" style={{margin: 10}}>
-        <ContainerCard>
-          <CardDetail
-            pokemonIndex={pokeIndex}
-            img={imageUrl0}
-            name={pokemonDetail}
+        <BackButton onPress={backHome} >
+          <Icon
+            name='arrow-left'
+            size={20}
           />
+          <TextBack>Back</TextBack>
+        </BackButton>
 
-          <ContainerCardFamily>
-            <FamilyText>Family Tree</FamilyText>
-          </ContainerCardFamily>
+        <ScrollView keyboardShouldPersistTaps="handled" style={{margin: 10}}>
+          <ContainerCard>
+            <CardDetail
+              pokemonIndex={pokeIndex}
+              img={imageUrl0}
+              name={pokemonDetail}
+            />
 
-          <PokemonList
-            numColumns={numColumns}
-            data={pokeFamily}
-            extraData={pokeIndex}
-            showsVerticalScrollIndicator={false}
-            // renderItem={renderItem}
-            keyExtractor={(item: Pokemon) => item.name}
-          />
+            <ContainerCardFamily>
+              <FamilyText>Family Tree</FamilyText>
+            </ContainerCardFamily>
 
-          <ContainerCard2>
-
-          </ContainerCard2>
-        </ContainerCard>
-      </ScrollView>
-    </Container>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            >
+              {
+                pokeFamily.map((item, index) =>(
+                  <ContainerFamily  key={item.name}>
+                    <Card
+                      pokemonIndex={item.params.pokemonIndex}
+                      img={item.img}
+                      name={item.name}
+                    />
+                  </ContainerFamily>
+                ))
+              }
+            </ScrollView>
+          </ContainerCard>
+        </ScrollView>
+      </Container>
+    )
   );
 }
 

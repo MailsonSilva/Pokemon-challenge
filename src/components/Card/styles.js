@@ -8,7 +8,6 @@ export const Container = styled.View`
   width: 100%;
   border-radius: 10px;
   background: ${Colors.grayEasy};
-  overflow: hidden;
 `;
 
 export const TextContainerCount = styled.View`

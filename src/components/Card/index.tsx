@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import api from '../../services/api';
 import {
    Container,
@@ -22,41 +23,44 @@ interface Pokemon {
 
 const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
   const [types, setTypes] = useState<Pokemon[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const loadTypes = async() => {
     const response = await api.get(`pokemon/${pokemonIndex}`);
 
     const tipos = response.data.types.map(item =>' '+ item.type.name).toString();
     setTypes(tipos);
+    setLoading(false);
   }
 
   useEffect(() => {
     loadTypes();
-
   },[]);
 
-  // const typeName = types.map(type => type.damage_relations.half_damage_to[0].name);
-
   return (
-    <Container {...rest} >
-        <TextContainerCount>
-          <TextCount># {pokemonIndex}</TextCount>
-        </TextContainerCount>
+    loading ? (
+      <ActivityIndicator size="large" />
+    ) : (
+      <Container {...rest} >
+          <TextContainerCount>
+            <TextCount># {pokemonIndex}</TextCount>
+          </TextContainerCount>
 
-        <ImageContainer>
-          <ImagePoke  source={{ uri: img }} />
-        </ImageContainer>
+          <ImageContainer>
+            <ImagePoke  source={{ uri: img }} />
+          </ImageContainer>
 
-        <TextContainerName>
-          <TextName>Name: </TextName>
-          <TextNamePokemon>{name}</TextNamePokemon>
-        </TextContainerName>
+          <TextContainerName>
+            <TextName>Name: </TextName>
+            <TextNamePokemon>{name}</TextNamePokemon>
+          </TextContainerName>
 
-        <TextContainerType>
-          <TextType>Type: </TextType>
-          <TextTypePokemon>{types}</TextTypePokemon>
-        </TextContainerType>
-    </Container>
+          <TextContainerType>
+            <TextType>Type: </TextType>
+            <TextTypePokemon>{types}</TextTypePokemon>
+          </TextContainerType>
+      </Container>
+    )
   );
 }
 

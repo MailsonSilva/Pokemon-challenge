@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
 import Colors from '../../styles/Colors';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
   flex: 1;
   background: ${Colors.primary};
 `;
@@ -33,7 +33,7 @@ export const BackButton = styled.TouchableOpacity`
 
 export const ContainerCardFamily = styled.View`
   width: 100%;
-  margin: 25px 0 5px;
+  margin: 25px 0;
 `;
 
 export const FamilyText = styled.Text`
@@ -42,13 +42,7 @@ export const FamilyText = styled.Text`
   font-family: RobotoSlab_400Regular;
 `;
 
-export const ContainerCard2 = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 20px;
-`;
-
-export const PokemonList = styled.FlatList`
+export const ContainerFamily = styled.View`
   margin: 5px;
+  width: 20%;
 `;
-
