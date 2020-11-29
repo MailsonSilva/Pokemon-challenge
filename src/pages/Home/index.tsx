@@ -13,13 +13,12 @@ export interface Pokemon {
 };
 
 let pokemonIndex = 1, numColumns=3;
-let newLimit = 0;
 
 const Home: React.FC = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingList, setLoadingList] = useState(false);
-  const [limit, setLimit] = useState(30);
+  const [limit, setLimit] = useState(0);
   const navigation = useNavigation();
 
 
@@ -35,17 +34,18 @@ const Home: React.FC = () => {
     if (loadingList) return;
 
     setLoadingList(true);
-    await api.get(`pokemon?limit=${limit}`)
+    await api.get(`pokemon?limit=30&offset=${limit}`)
     .then((response) => {
+
       setPokemons(response.data.results);
+
+      setLoading(false);
+      setLoadingList(false);
+      setLimit(limit + 30);
     })
     .catch((error) => {
       Alert.alert('Location error', `${(error.code, error.message)}`);
     });
-    setLoading(false);
-    setLoadingList(false);
-    newLimit = limit + 30;
-    setLimit(newLimit);
   };
 
   const renderFooter = () => {
@@ -58,15 +58,22 @@ const Home: React.FC = () => {
   };
 
   const renderItem = ({item}) => {
-    // Define a numeração do pokemon
+    Define a numeração do pokemon
     const url = item.url;
     const pokemonIndex = url.split('/')[url.split('/').length - 2];
-    // Pega a imagem do pokemon de acordo com sua numeração
     return(
-        <ButtonCard onPress={() => DetailPage(pokemonIndex)}>
-            <Card name={item.name}/>
+        <ButtonCard onPress={() => DetailPage(1)}>
+          <Card name={item.name}/>
         </ButtonCard>
     ) ;
+  }
+
+  const FindPokemon = async(value) => {
+    if (!value !== '') {
+      console.log(value);
+      const response = await api.get(`pokemon/${value}`);
+      setPokemons(response.data.name);
+    }
   }
 
   return (
@@ -83,6 +90,7 @@ const Home: React.FC = () => {
             placeholder="Digite o nome do Pokémon"
             icon="search"
             autoCorrect={false}
+            onChangeText={(value) => FindPokemon(value.toLocaleLowerCase())}
             autoCapitalize="none"
           />
         </ContainerBody>
@@ -95,6 +103,7 @@ const Home: React.FC = () => {
           onEndReachedThreshold={0.1}
           ListFooterComponent={renderFooter}
           showsVerticalScrollIndicator={false}
+          refresh={true}
           renderItem={renderItem}
           keyExtractor={(item: Pokemon) => item.name}
         />

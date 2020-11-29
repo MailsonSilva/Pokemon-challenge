@@ -31,7 +31,7 @@ const Details: React.FC = () => {
 
   useEffect(() => {
     loadDetail();
-  },[pokeIndex]);
+  },[]);
 
   const loadDetail = async() => {
     if (loading) return;

@@ -26,7 +26,7 @@ interface Pokemon {
 
 
 const CardDetail: React.FC<Pokemon> = ({pokemonIndex, ...rest}) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [name, setName] = useState('');
   const [imageUrl, setimageUrl] = useState('');
   const [height, setheight] = useState(0);
@@ -41,9 +41,6 @@ const CardDetail: React.FC<Pokemon> = ({pokemonIndex, ...rest}) => {
   },[]);
 
   const loadTypes = async() => {
-    if (loading) return;
-
-    setLoading(true);
     const response = await api.get(`pokemon/${pokemonIndex}`);
 
     const {name}   = response.data;
