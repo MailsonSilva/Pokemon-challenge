@@ -15,7 +15,7 @@ export const TextContainerCount = styled.View`
 `;
 
 export const TextCount = styled.Text`
-  font-size: 14px;
+  font-size: 13px;
   font-family: RobotoSlab_500Medium;
   color: ${Colors.grayHard};
 `;
@@ -35,13 +35,13 @@ export const TextContainerName = styled.View`
 `;
 
 export const TextName = styled.Text`
-  font-size: 14px;
+  font-size: 13px;
   font-family: RobotoSlab_400Regular;
   color: ${Colors.fill};
 `;
 
 export const TextNamePokemon = styled.Text`
-  font-size: 14px;
+  font-size: 13px;
   font-family: RobotoSlab_500Medium;
   color: ${Colors.orangeLight};
 `;
@@ -53,13 +53,17 @@ export const TextContainerType = styled.View`
 `;
 
 export const TextType = styled.Text`
-  font-size: 13px;
+  font-size: 12px;
   font-family: RobotoSlab_400Regular;
   color: ${Colors.fill};
 `;
 
 export const TextTypePokemon = styled.Text`
-  font-size: 13px;
+  font-size: 12px;
   font-family: RobotoSlab_500Medium;
   color: ${Colors.orangeLight};
+`;
+
+export const IndicatorView = styled.View`
+  align-Self: center;
 `;

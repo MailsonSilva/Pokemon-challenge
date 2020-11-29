@@ -20,3 +20,7 @@ export const ButtonCard = styled.TouchableOpacity`
 export const PokemonList = styled.FlatList`
   margin: 5px;
 `;
+
+export const IndicatorView = styled.View`
+  align-Self: center;
+`;

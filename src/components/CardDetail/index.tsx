@@ -22,15 +22,13 @@ import { ActivityIndicator } from 'react-native';
 
 interface Pokemon {
   pokemonIndex: number;
-  name: string;
-  img: string;
-  height: Number;
-  weight: Number;
 };
 
 
-const CardDetail: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
-  const [loading, setLoading] = useState(true);
+const CardDetail: React.FC<Pokemon> = ({pokemonIndex, ...rest}) => {
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [imageUrl, setimageUrl] = useState('');
   const [height, setheight] = useState(0);
   const [weight, setweight] = useState(0);
   const [hp, setHp] = useState(0);
@@ -43,17 +41,22 @@ const CardDetail: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
   },[]);
 
   const loadTypes = async() => {
+    if (loading) return;
+
+    setLoading(true);
     const response = await api.get(`pokemon/${pokemonIndex}`);
 
+    const {name}   = response.data;
     const {height} = response.data;
     const {weight} = response.data;
-
-    setheight(height);
-    setweight(weight);
-
+    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`;
     const stats = response.data.stats.map(stats => stats.base_stat);
     const statsSeparados = stats.toString().split(',', 6);
 
+    setName(name);
+    setimageUrl(imageUrl);
+    setheight(height);
+    setweight(weight);
     setHp(statsSeparados[5]);
     setAtk(statsSeparados[4]);
     setDef(statsSeparados[3]);
@@ -71,7 +74,7 @@ const CardDetail: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
           </TextContainerCount>
 
           <ImageContainer>
-            <ImagePoke source={{ uri: img }}/>
+            <ImagePoke source={{ uri: imageUrl }}/>
           </ImageContainer>
 
           <TextContainerName>

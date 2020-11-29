@@ -44,5 +44,10 @@ export const FamilyText = styled.Text`
 
 export const ContainerFamily = styled.View`
   margin: 5px;
-  width: 20%;
+`;
+
+export const IndicatorView = styled.View`
+  flex:1;
+  align-Self: center;
+  justify-content: center;
 `;

@@ -13,51 +13,59 @@ import {
   TextBack,
   ContainerCardFamily,
   FamilyText,
-  ContainerFamily
+  ContainerFamily,
+  IndicatorView
 } from './styles';
 
 interface Pokemon {
-  params: {
-    pokemonIndex: number;
-  }
-
   name: string;
-  img: string;
 };
 
-let numColumns=2;
-
 const Details: React.FC = () => {
-  const [pokemonDetail, setpokemonDetail] = useState<Pokemon>();
-  const [pokeFamily, setPokeFamily] = useState<Pokemon[]>([
-    {params:{pokemonIndex:1}, name: 'a', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png`},
-    {params:{pokemonIndex:2}, name: 'b', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png`},
-    {params:{pokemonIndex:3}, name: 'c', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png`},
-    {params:{pokemonIndex:4}, name: 'd', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png`},
-    {params:{pokemonIndex:5}, name: 'e', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png`},
-    {params:{pokemonIndex:6}, name: 'f', img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png`},
-  ]);
-  const [loading, setLoading] = useState(true);
+  const [pokeFamily, setPokeFamily] = useState([]);
+  const [loading, setLoading] = useState(false);
   const route = useRoute<Pokemon | any>();
   const navigation = useNavigation();
 
   const pokeIndex = route.params.pokemonIndex;
 
-  const imageUrl0 = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeIndex}.png`;
-
-  // const loadDetail = async() => {
-  //   const response = await api.get(`pokemon/${pokeIndex}/`);
-  //   // setpokemonDetail(response.data.forms);
-  //   const pokemonName = response.data.forms.map(item => item.name).toString();
-  //   setpokemonDetail(pokemonName);
-  //   console.log(pokemonName);
-
-  // }
-
   useEffect(() => {
-  //   // loadDetail();
-    setLoading(false);
+    loadDetail();
   },[pokeIndex]);
+
+  const loadDetail = async() => {
+    if (loading) return;
+
+    setLoading(true);
+    const response = await api.get(`pokemon-species/${pokeIndex}/`);
+    const evolvesFrom = response.data.evolves_from_species;
+
+    if (!evolvesFrom) {
+      const response = await api.get(`evolution-chain/${pokeIndex}/`);
+
+      const evolutions = response.data.chain.evolves_to;
+      let evolutionTo2 = evolutions[0].evolves_to[0].species.name;
+      const evolutionTo1 = evolutions[0].species.name;
+      let nameEvolutions :Pokemon[] | any = [];
+      nameEvolutions.push(evolutionTo1, evolutionTo2);
+
+      setPokeFamily(nameEvolutions);
+    }
+    // else {
+    //   const evolves_from = evolvesFrom.name;
+    //   const response = await api.get(`evolution-chain/${pokeIndex}/`);
+
+    //   const evolutions = response.data.chain.evolves_to;
+    //   const evolutionTo2 = evolutions[0].evolves_to[0].species.name;
+    //   let nameEvolutions :Pokemon[] | any = [];
+    //   nameEvolutions.push(evolves_from, evolutionTo2);
+
+    //   console.log(evolves_from);
+    //   setPokeFamily(nameEvolutions);
+    // }
+
+    setLoading(false);
+  }
 
   const backHome = () => {
     navigation.goBack();
@@ -65,7 +73,9 @@ const Details: React.FC = () => {
 
   return (
     loading ? (
-      <ActivityIndicator size="large" />
+      <IndicatorView>
+        <ActivityIndicator size="large" color="red"/>
+      </IndicatorView>
     ) : (
       <Container>
         <Header>POKÉMON CHALLENGE</Header>
@@ -78,13 +88,9 @@ const Details: React.FC = () => {
           <TextBack>Back</TextBack>
         </BackButton>
 
-        <ScrollView keyboardShouldPersistTaps="handled" style={{margin: 10}}>
+        <ScrollView showsVerticalScrollIndicator={false} style={{margin: 10}}>
           <ContainerCard>
-            <CardDetail
-              pokemonIndex={pokeIndex}
-              img={imageUrl0}
-              name={pokemonDetail}
-            />
+            <CardDetail pokemonIndex={pokeIndex}/>
 
             <ContainerCardFamily>
               <FamilyText>Family Tree</FamilyText>
@@ -95,17 +101,14 @@ const Details: React.FC = () => {
               showsHorizontalScrollIndicator={false}
             >
               {
-                pokeFamily.map((item, index) =>(
-                  <ContainerFamily  key={item.name}>
-                    <Card
-                      pokemonIndex={item.params.pokemonIndex}
-                      img={item.img}
-                      name={item.name}
-                    />
+                pokeFamily.map((item) =>(
+                  <ContainerFamily key={item}>
+                    <Card name={item}/>
                   </ContainerFamily>
                 ))
               }
             </ScrollView>
+
           </ContainerCard>
         </ScrollView>
       </Container>

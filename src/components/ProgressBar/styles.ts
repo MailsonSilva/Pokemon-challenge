@@ -16,7 +16,7 @@ export const Infocontainer = styled.Text`
 `;
 
 export const InfoText = styled.Text`
-  font-size: 20px;
+  font-size: 16px;
   color: ${Colors.fill};
   font-family: RobotoSlab_400Regular;
 `;
@@ -30,7 +30,7 @@ export const InfoValue = styled.View`
 `;
 
 export const ValueText = styled.Text<ContainerProps>`
-  font-size: 14px;
+  font-size: 13px;
   color: ${Colors.fill};
   font-family: RobotoSlab_400Regular;
   margin-left: ${props => props.progressA}px;

@@ -12,42 +12,49 @@ import {
    TextName,
    TextContainerType,
    TextType,
-   TextTypePokemon
+   TextTypePokemon,
+   IndicatorView
   } from './styles';
 
 interface Pokemon {
-  pokemonIndex: number;
   name: string;
-  img: string;
 };
 
-const Card: React.FC<Pokemon> = ({pokemonIndex, name, img, ...rest}) => {
+const Card: React.FC<Pokemon> = ({name, ...rest}) => {
+  const [id, setId] = useState(0);
+  const [imageUrl, setimageUrl] = useState('');
   const [types, setTypes] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const loadTypes = async() => {
-    const response = await api.get(`pokemon/${pokemonIndex}`);
-
-    const tipos = response.data.types.map(item =>' '+ item.type.name).toString();
-    setTypes(tipos);
-    setLoading(false);
-  }
 
   useEffect(() => {
     loadTypes();
   },[]);
 
+  const loadTypes = async() => {
+    const response = await api.get(`pokemon/${name}`);
+    const {id} = response.data;
+    const tipos = response.data.types.map(item =>' '+ item.type.name).toString();
+    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+
+    setId(id);
+    setimageUrl(imageUrl);
+    setTypes(tipos);
+    setLoading(false);
+  }
+
   return (
     loading ? (
-      <ActivityIndicator size="large" />
+      <IndicatorView>
+        <ActivityIndicator size="large" />
+      </IndicatorView>
     ) : (
       <Container {...rest} >
           <TextContainerCount>
-            <TextCount># {pokemonIndex}</TextCount>
+            <TextCount># {id}</TextCount>
           </TextContainerCount>
 
           <ImageContainer>
-            <ImagePoke  source={{ uri: img }} />
+            <ImagePoke  source={{ uri: imageUrl }} />
           </ImageContainer>
 
           <TextContainerName>
