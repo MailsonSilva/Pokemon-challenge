@@ -32,7 +32,7 @@
 
 ## 💻 Project
 
-The project is an application aimed at scheduling an appointment with a barber registered in the application.
+The Project consuming the pokemon api (Poke Api).
 
 ## :rocket: Technologies
 
